@@ -1,0 +1,1 @@
+cmd_/home/zc/Documents/36.4/Linux_for_Tegra/source/nvidia-oot/drivers/media/platform/tegra/tpg/modules.order := {   echo /home/zc/Documents/36.4/Linux_for_Tegra/source/nvidia-oot/drivers/media/platform/tegra/tpg/nvhost-vi-tpg-t19x.ko; :; } | awk '!x[$$0]++' - > /home/zc/Documents/36.4/Linux_for_Tegra/source/nvidia-oot/drivers/media/platform/tegra/tpg/modules.order

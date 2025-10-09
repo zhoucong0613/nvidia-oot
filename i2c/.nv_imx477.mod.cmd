@@ -1,0 +1,1 @@
+cmd_/home/zc/Documents/36.4/Linux_for_Tegra/source/nvidia-oot/drivers/media/i2c/nv_imx477.mod := printf '%s\n'   nv_imx477.o | awk '!x[$$0]++ { print("/home/zc/Documents/36.4/Linux_for_Tegra/source/nvidia-oot/drivers/media/i2c/"$$0) }' > /home/zc/Documents/36.4/Linux_for_Tegra/source/nvidia-oot/drivers/media/i2c/nv_imx477.mod

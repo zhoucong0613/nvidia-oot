@@ -1,0 +1,14 @@
+/home/zc/Documents/36.4/Linux_for_Tegra/source/nvidia-oot/drivers/media/platform/tegra/cdi/cdi_gpio.ko
+/home/zc/Documents/36.4/Linux_for_Tegra/source/nvidia-oot/drivers/media/platform/tegra/cdi/cdi_mgr.ko
+/home/zc/Documents/36.4/Linux_for_Tegra/source/nvidia-oot/drivers/media/platform/tegra/cdi/cdi_dev.ko
+/home/zc/Documents/36.4/Linux_for_Tegra/source/nvidia-oot/drivers/media/platform/tegra/cdi/cdi_pwm.ko
+/home/zc/Documents/36.4/Linux_for_Tegra/source/nvidia-oot/drivers/media/platform/tegra/cdi/cam_cdi_tsc.ko
+/home/zc/Documents/36.4/Linux_for_Tegra/source/nvidia-oot/drivers/media/platform/tegra/tpg/nvhost-vi-tpg-t19x.ko
+/home/zc/Documents/36.4/Linux_for_Tegra/source/nvidia-oot/drivers/media/platform/tegra/isc/isc_gpio.ko
+/home/zc/Documents/36.4/Linux_for_Tegra/source/nvidia-oot/drivers/media/platform/tegra/isc/isc_mgr.ko
+/home/zc/Documents/36.4/Linux_for_Tegra/source/nvidia-oot/drivers/media/platform/tegra/isc/isc_dev.ko
+/home/zc/Documents/36.4/Linux_for_Tegra/source/nvidia-oot/drivers/media/platform/tegra/isc/isc_pwm.ko
+/home/zc/Documents/36.4/Linux_for_Tegra/source/nvidia-oot/drivers/media/platform/tegra/camera/tegra-camera.ko
+/home/zc/Documents/36.4/Linux_for_Tegra/source/nvidia-oot/drivers/media/platform/tegra/camera/tests/utils/tegracam_log.ko
+/home/zc/Documents/36.4/Linux_for_Tegra/source/nvidia-oot/drivers/media/platform/tegra/camera/tests/sensor_kernel_tests.ko
+/home/zc/Documents/36.4/Linux_for_Tegra/source/nvidia-oot/drivers/media/platform/tegra/cam_fsync/cam_fsync.ko

@@ -1,0 +1,1 @@
+cmd_/home/zc/Documents/36.4/Linux_for_Tegra/source/nvidia-oot/drivers/media/platform/tegra/cdi/cam_cdi_tsc.mod := printf '%s\n'   cam_cdi_tsc.o | awk '!x[$$0]++ { print("/home/zc/Documents/36.4/Linux_for_Tegra/source/nvidia-oot/drivers/media/platform/tegra/cdi/"$$0) }' > /home/zc/Documents/36.4/Linux_for_Tegra/source/nvidia-oot/drivers/media/platform/tegra/cdi/cam_cdi_tsc.mod
