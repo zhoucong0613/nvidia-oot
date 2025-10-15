@@ -231,6 +231,10 @@ static int extract_pixel_format(
 		*format = V4L2_PIX_FMT_SBGGR10;
 	else if (strncmp(pixel_t, "bayer_rggb10", size) == 0)
 		*format = V4L2_PIX_FMT_SRGGB10;
+	else if (strncmp(pixel_t, "bayer_bggr8", size) == 0)
+		*format = V4L2_PIX_FMT_SBGGR8;
+	else if (strncmp(pixel_t, "bayer_rggb8", size) == 0)
+		*format = V4L2_PIX_FMT_SRGGB8;
 	else if (strncmp(pixel_t, "bayer_grbg10", size) == 0)
 		*format = V4L2_PIX_FMT_SGRBG10;
 	else if (strncmp(pixel_t, "bayer_gbrg10", size) == 0)
