@@ -10,7 +10,30 @@
 
 #include <media/tegracam_core.h>
 
-#include "abh_max96724.h"
+#define USE_MAX96712_DESER 1
+
+#if defined(USE_MAX96712_DESER)
+#include "abh_max96712.h"  // 包含MAX96712的头文件
+#define DESER_START_STREAMING_DEEPTH abh_max96712_start_streaming_deepth
+#define DESER_STOP_STREAMING         abh_max96712_stop_streaming
+#define DESER_MONOPOLIZE_LINK        abh_max96712_monopolize_link
+#define DESER_RESTORE_LINK           abh_max96712_restore_link
+#define DESER_ENABLE_LINK            abh_max96712_enable_link
+#define DESER_LOCK_LINK              abh_max96712_lock_link
+#define DESER_UNLOCK_LINK            abh_max96712_unlock_link
+#define DESER_CHECK_LINK_STATUS      abh_max96712_check_link_status
+
+#elif defined(USE_MAX96724_DESER)
+#include "abh_max96724.h"  // 包含MAX96724的头文件
+#define DESER_START_STREAMING_DEEPTH abh_max96724_start_streaming_deepth
+#define DESER_STOP_STREAMING         abh_max96724_stop_streaming
+#define DESER_MONOPOLIZE_LINK        abh_max96724_monopolize_link
+#define DESER_RESTORE_LINK           abh_max96724_restore_link
+#define DESER_ENABLE_LINK            abh_max96724_enable_link
+#define DESER_LOCK_LINK              abh_max96724_lock_link
+#define DESER_UNLOCK_LINK            abh_max96724_unlock_link
+#define DESER_CHECK_LINK_STATUS      abh_max96724_check_link_status
+#endif
 
 #include "abh_ov9282_max9295d_mode_tbls.h"
 
@@ -340,7 +363,7 @@ static int abh_max9295d_deepth_start_streaming(struct tegracam_device *tc_dev)
 	iic_write(priv->i2c_client, MAX9295d_ALTER_ADDR_BASE + priv->des_link, 0x0002, 0xf3);
 	iic_write(priv->i2c_client, MAX9295d_ALTER_ADDR_BASE + priv->des_link, 0x0314, 0x6A); 
 
-	err = abh_max96724_start_streaming_deepth(priv->dser_dev, &priv->g_ctx);
+	err = DESER_START_STREAMING_DEEPTH(priv->dser_dev, &priv->g_ctx);
 	if (err)
 		goto exit;
 
@@ -371,7 +394,7 @@ static int abh_max9295d_deepth_stop_streaming(struct tegracam_device *tc_dev)
 
 	dev_info(dev,"abh:abh_max9295d_deepth stop streaming\n");
 	/* disable serdes streaming */
-	// abh_max96724_stop_streaming(priv->dser_dev, &priv->g_ctx);
+	// DESER_STOP_STREAMING(priv->dser_dev, &priv->g_ctx);
 
 	return 0;
 }
@@ -562,8 +585,16 @@ static int abh_max9295d_deepth_probe(struct i2c_client *client, const struct i2c
 		return err;
 	}
 
+	// DESER_LOCK_LINK(priv->dser_dev);
+	// if ( DESER_CHECK_LINK_STATUS(priv->dser_dev, priv->des_link) ){
+	// 	DESER_UNLOCK_LINK(priv->dser_dev);
+	// 	dev_err(dev, "abh: link_%c is occupied\n",'A'+priv->des_link);
+	// 	return -EINVAL;
+	// }
+
 	err = tegracam_device_register(tc_dev);
 	if (err) {
+		// DESER_UNLOCK_LINK(priv->dser_dev);
 		dev_err(dev, "abh: tegra camera driver registration failed\n");
 		return err;
 	}
@@ -573,7 +604,8 @@ static int abh_max9295d_deepth_probe(struct i2c_client *client, const struct i2c
 	priv->subdev = &tc_dev->s_data->subdev;
 	tegracam_set_privdata(tc_dev, (void *)priv);
 
-	abh_max96724_monopolize_link(priv->dser_dev, priv->des_link);
+	DESER_MONOPOLIZE_LINK(priv->dser_dev, priv->des_link);
+	mdelay(50);
 	iic_write(client,0x40, 0x0000, (MAX9295d_ALTER_ADDR_BASE+priv->des_link)<<1);
 
 	mdelay(10);
@@ -584,8 +616,9 @@ static int abh_max9295d_deepth_probe(struct i2c_client *client, const struct i2c
 	err = iic_read(client, MAX9295d_ALTER_ADDR_BASE+priv->des_link, 0x000d, &val);
 	if (err || val != 0x95) {
 		dev_err(dev, "abh access abh_max9295d_deepth's 9295d failed\n");
-		abh_max96724_restore_link(priv->dser_dev);
+		DESER_RESTORE_LINK(priv->dser_dev);
 		tegracam_device_unregister(tc_dev);
+		// DESER_UNLOCK_LINK(priv->dser_dev);
 		return -EINVAL;
 	}
 
@@ -600,8 +633,9 @@ static int abh_max9295d_deepth_probe(struct i2c_client *client, const struct i2c
     iic_write(client, MAX9295d_ALTER_ADDR_BASE+priv->des_link,0x00a3, 0x30+priv->des_link);
     iic_write(client, MAX9295d_ALTER_ADDR_BASE+priv->des_link,0x00ab, 0x30+priv->des_link);
 
-	abh_max96724_enable_link(priv->dser_dev, priv->des_link);
-	abh_max96724_restore_link(priv->dser_dev);
+	DESER_ENABLE_LINK(priv->dser_dev, priv->des_link);
+	DESER_RESTORE_LINK(priv->dser_dev);
+	// DESER_UNLOCK_LINK(priv->dser_dev);
 
 	err = tegracam_v4l2subdev_register(tc_dev, true);
 	if (err) {

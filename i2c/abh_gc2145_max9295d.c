@@ -10,7 +10,30 @@
 
 #include <media/tegracam_core.h>
 
-#include "abh_max96724.h"
+#define USE_MAX96712_DESER 1
+
+#if defined(USE_MAX96712_DESER)
+#include "abh_max96712.h"  // 包含MAX96712的头文件
+#define DESER_START_STREAMING        abh_max96712_start_streaming
+#define DESER_STOP_STREAMING         abh_max96712_stop_streaming
+#define DESER_MONOPOLIZE_LINK        abh_max96712_monopolize_link
+#define DESER_RESTORE_LINK           abh_max96712_restore_link
+#define DESER_ENABLE_LINK            abh_max96712_enable_link
+#define DESER_LOCK_LINK              abh_max96712_lock_link
+#define DESER_UNLOCK_LINK            abh_max96712_unlock_link
+#define DESER_CHECK_LINK_STATUS      abh_max96712_check_link_status
+
+#elif defined(USE_MAX96724_DESER)
+#include "abh_max96724.h"  // 包含MAX96724的头文件
+#define DESER_START_STREAMING        abh_max96724_start_streaming
+#define DESER_STOP_STREAMING         abh_max96724_stop_streaming
+#define DESER_MONOPOLIZE_LINK        abh_max96724_monopolize_link
+#define DESER_RESTORE_LINK           abh_max96724_restore_link
+#define DESER_ENABLE_LINK            abh_max96724_enable_link
+#define DESER_LOCK_LINK              abh_max96724_lock_link
+#define DESER_UNLOCK_LINK            abh_max96724_unlock_link
+#define DESER_CHECK_LINK_STATUS      abh_max96724_check_link_status
+#endif
 
 #include "abh_gc2145_max9295d_mode_tbls.h"
 
@@ -96,6 +119,17 @@ static int abh_max9295d_write_reg(struct camera_common_data *s_data,
 }
 
 
+// static int abh_max9295d_write_table(struct abh_max9295d *priv, const abh_max9295d_reg table[])
+// {
+// 	struct device *dev = priv->s_data->dev;
+
+// 	struct i2c_client *client = to_i2c_client(priv->s_data->dev);
+// 	dev_info(dev, "I2C addr: 0x%02x\n", client->addr);
+
+//     return regmap_util_write_table_8(priv->s_data->regmap, table, NULL, 0,
+//         ABH_MAX9295D_TABLE_WAIT_MS, ABH_MAX9295D_TABLE_END);
+// }
+
 static int abh_max9295d_write_table(struct abh_max9295d *priv, const abh_max9295d_reg table[])
 {
     struct device *dev = priv->s_data->dev;
@@ -132,7 +166,7 @@ static int abh_max9295d_write_table(struct abh_max9295d *priv, const abh_max9295
             return ret < 0 ? ret : -EIO;
         }
 
-        usleep_range(1, 2);
+        usleep_range(0, 1);
     }
     return 0;
 }
@@ -326,7 +360,7 @@ static int abh_max9295d_start_streaming(struct tegracam_device *tc_dev)
 	iic_write(priv->i2c_client, MAX9295d_ALTER_ADDR_BASE + priv->des_link, 0x0002, 0xf3);
     iic_write(priv->i2c_client, MAX9295d_ALTER_ADDR_BASE + priv->des_link, 0x0318, 0x5E);
 
-	err = abh_max96724_start_streaming(priv->dser_dev, &priv->g_ctx);
+	err = DESER_START_STREAMING(priv->dser_dev, &priv->g_ctx);
     if (err){
 		goto exit;
 	}
@@ -358,7 +392,7 @@ static int abh_max9295d_stop_streaming(struct tegracam_device *tc_dev)
 
 	dev_info(dev,"abh:abh_max9295d stop streaming\n");
 	/* disable serdes streaming */
-	// abh_max96724_stop_streaming(priv->dser_dev, &priv->g_ctx);
+	// DESER_STOP_STREAMING(priv->dser_dev, &priv->g_ctx);
 	abh_max9295d_write_table(priv, mode_table[ABH_MAX9295D_STOP_STREAM]);
 	return 0;
 }
@@ -561,7 +595,7 @@ static int abh_max9295d_probe(struct i2c_client *client, const struct i2c_device
 	tegracam_set_privdata(tc_dev, (void *)priv);
 
 	mutex_lock(&serdes_lock__);
-	abh_max96724_monopolize_link(priv->dser_dev, priv->des_link);
+	DESER_MONOPOLIZE_LINK(priv->dser_dev, priv->des_link);
 	iic_write(client,0x40, 0x0000, (MAX9295d_ALTER_ADDR_BASE+priv->des_link)<<1);
 
 	mdelay(10);
@@ -569,7 +603,7 @@ static int abh_max9295d_probe(struct i2c_client *client, const struct i2c_device
 	err = iic_read(client, MAX9295d_ALTER_ADDR_BASE+priv->des_link, 0x000d, &val);
 	if (err || val != 0x95) {
 		dev_err(dev, "abh access abh_max9295d's 9295d failed\n");
-		abh_max96724_restore_link(priv->dser_dev);
+		DESER_RESTORE_LINK(priv->dser_dev);
 		tegracam_device_unregister(tc_dev);
 		mutex_unlock(&serdes_lock__);
 		return -EINVAL;
@@ -590,8 +624,8 @@ static int abh_max9295d_probe(struct i2c_client *client, const struct i2c_device
     iic_write(client, MAX9295d_ALTER_ADDR_BASE+priv->des_link,0x00a3, 0x30+priv->des_link);
     iic_write(client, MAX9295d_ALTER_ADDR_BASE+priv->des_link,0x00ab, 0x30+priv->des_link);
 
-	abh_max96724_enable_link(priv->dser_dev, priv->des_link);
-	abh_max96724_restore_link(priv->dser_dev);
+	DESER_ENABLE_LINK(priv->dser_dev, priv->des_link);
+	DESER_RESTORE_LINK(priv->dser_dev);
 
 	err = tegracam_v4l2subdev_register(tc_dev, true);
 	if (err) {

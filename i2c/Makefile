@@ -27,6 +27,10 @@ obj-m += pca9570.o
 obj-m += virtual_i2c_mux.o
 endif
 
+obj-m += x5_max9295.o
+obj-m += x5_max96724.o
 obj-m += abh_max96724.o
 obj-m += abh_gc2145_max9295d.o
 obj-m += abh_ov9282_max9295d.o
+
+obj-m += abh_max96712.o

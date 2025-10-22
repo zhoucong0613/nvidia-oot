@@ -19,6 +19,7 @@
 
 /* Didn't find kernel defintions, for now adding here */
 #define GMSL_CSI_DT_RAW_8 0x2A
+#define GMSL_CSI_DT_RGB_8 0x24
 #define GMSL_CSI_DT_RAW_10 0x2B
 #define GMSL_CSI_DT_RAW_12 0x2C
 #define GMSL_CSI_DT_UED_U1 0x30

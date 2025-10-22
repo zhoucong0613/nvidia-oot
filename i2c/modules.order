@@ -15,6 +15,9 @@
 /home/zc/Documents/36.4/Linux_for_Tegra/source/nvidia-oot/drivers/media/i2c/max929x.ko
 /home/zc/Documents/36.4/Linux_for_Tegra/source/nvidia-oot/drivers/media/i2c/pca9570.ko
 /home/zc/Documents/36.4/Linux_for_Tegra/source/nvidia-oot/drivers/media/i2c/virtual_i2c_mux.ko
+/home/zc/Documents/36.4/Linux_for_Tegra/source/nvidia-oot/drivers/media/i2c/x5_max9295.ko
+/home/zc/Documents/36.4/Linux_for_Tegra/source/nvidia-oot/drivers/media/i2c/x5_max96724.ko
 /home/zc/Documents/36.4/Linux_for_Tegra/source/nvidia-oot/drivers/media/i2c/abh_max96724.ko
 /home/zc/Documents/36.4/Linux_for_Tegra/source/nvidia-oot/drivers/media/i2c/abh_gc2145_max9295d.ko
 /home/zc/Documents/36.4/Linux_for_Tegra/source/nvidia-oot/drivers/media/i2c/abh_ov9282_max9295d.ko
+/home/zc/Documents/36.4/Linux_for_Tegra/source/nvidia-oot/drivers/media/i2c/abh_max96712.ko
