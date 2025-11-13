@@ -10,6 +10,7 @@
 
 #include <media/tegracam_core.h>
 
+// #define USE_MAX96724_DESER 1
 #define USE_MAX96712_DESER 1
 
 #if defined(USE_MAX96712_DESER)
@@ -175,66 +176,66 @@ static int iic_read(struct i2c_client* client, u8 slaveaddr, u16 regaddr, u8 *da
 }
 
 
-static int abh_max9295d_deepth_write_block(struct camera_common_data *s_data,
-                                    u8 *buf, int len)
-{
-    struct i2c_client *client = to_i2c_client(s_data->dev);
-    struct device *dev = s_data->dev;
-    struct i2c_msg msg;
-    int ret, i;
+// static int abh_max9295d_deepth_write_block(struct camera_common_data *s_data,
+//                                     u8 *buf, int len)
+// {
+//     struct i2c_client *client = to_i2c_client(s_data->dev);
+//     struct device *dev = s_data->dev;
+//     struct i2c_msg msg;
+//     int ret, i;
 
-    msg.addr  = client->addr;
-    msg.flags = 0;   /* 写 */
-    msg.len   = len;
-    msg.buf   = buf;
+//     msg.addr  = client->addr;
+//     msg.flags = 0;   /* 写 */
+//     msg.len   = len;
+//     msg.buf   = buf;
 
-    ret = i2c_transfer(client->adapter, &msg, 1);
-    if (ret == 1) {
-        dev_info(dev, "abh:w block I2C addr=0x%02x len=%d data:",
-                 client->addr, len);
-        for (i = 0; i < len; i++)
-            pr_cont(" 0x%02x", buf[i]);
-        pr_cont("\n");
-        return 0;
-    } else {
-        dev_err(dev, "abh:w block failed I2C addr=0x%02x len=%d ret=%d\n",
-                client->addr, len, ret);
-        return -EIO;
-    }
+//     ret = i2c_transfer(client->adapter, &msg, 1);
+//     if (ret == 1) {
+//         dev_info(dev, "abh:w block I2C addr=0x%02x len=%d data:",
+//                  client->addr, len);
+//         for (i = 0; i < len; i++)
+//             pr_cont(" 0x%02x", buf[i]);
+//         pr_cont("\n");
+//         return 0;
+//     } else {
+//         dev_err(dev, "abh:w block failed I2C addr=0x%02x len=%d ret=%d\n",
+//                 client->addr, len, ret);
+//         return -EIO;
+//     }
 
-	usleep_range(100, 110);
-}
+// 	usleep_range(100, 110);
+// }
 
 
-static int abh_max9295d_deepth_read_block(struct camera_common_data *s_data,
-                                   u8 *buf, int len)
-{
-    struct i2c_client *client = to_i2c_client(s_data->dev);
-    struct device *dev = s_data->dev;
-    struct i2c_msg msg;
-    int ret, i;
+// static int abh_max9295d_deepth_read_block(struct camera_common_data *s_data,
+//                                    u8 *buf, int len)
+// {
+//     struct i2c_client *client = to_i2c_client(s_data->dev);
+//     struct device *dev = s_data->dev;
+//     struct i2c_msg msg;
+//     int ret, i;
 
-    msg.addr  = client->addr;
-    msg.flags = I2C_M_RD;   /* 读 */
-    msg.len   = len;
-    msg.buf   = buf;
+//     msg.addr  = client->addr;
+//     msg.flags = I2C_M_RD;   /* 读 */
+//     msg.len   = len;
+//     msg.buf   = buf;
 
-    ret = i2c_transfer(client->adapter, &msg, 1);
-    if (ret == 1) {
-        dev_info(dev, "abh:r block I2C addr=0x%02x len=%d data:",
-                 client->addr, len);
-        for (i = 0; i < len; i++)
-            pr_cont(" 0x%02x", buf[i]);
-        pr_cont("\n");
-        return 0;
-    } else {
-        dev_err(dev, "abh:r block failed I2C addr=0x%02x len=%d ret=%d\n",
-                client->addr, len, ret);
-        return -EIO;
-    }
+//     ret = i2c_transfer(client->adapter, &msg, 1);
+//     if (ret == 1) {
+//         dev_info(dev, "abh:r block I2C addr=0x%02x len=%d data:",
+//                  client->addr, len);
+//         for (i = 0; i < len; i++)
+//             pr_cont(" 0x%02x", buf[i]);
+//         pr_cont("\n");
+//         return 0;
+//     } else {
+//         dev_err(dev, "abh:r block failed I2C addr=0x%02x len=%d ret=%d\n",
+//                 client->addr, len, ret);
+//         return -EIO;
+//     }
 
-	usleep_range(100, 110);
-}
+// 	usleep_range(100, 110);
+// }
 
 
 static int abh_max9295d_deepth_power_on(struct camera_common_data *s_data)
@@ -343,9 +344,9 @@ static int abh_max9295d_deepth_set_mode(struct tegracam_device *tc_dev)
 	return 0;
 }
 
-u8 wbuf1[5] = {0x01, 0x02, 0x05, 0x04, 0x6c};
-u8 wbuf2[4] = {0x01, 0x07, 0x04, 0x6c};
-u8 rbuf[7];
+// u8 wbuf1[5] = {0x01, 0x02, 0x05, 0x04, 0x6c};
+// u8 wbuf2[4] = {0x01, 0x07, 0x04, 0x6c};
+// u8 rbuf[7];
 
 static int abh_max9295d_deepth_start_streaming(struct tegracam_device *tc_dev)
 {
@@ -367,11 +368,11 @@ static int abh_max9295d_deepth_start_streaming(struct tegracam_device *tc_dev)
 	if (err)
 		goto exit;
 
-	abh_max9295d_deepth_write_block(priv->s_data, wbuf1, sizeof(wbuf1));
-	mdelay(100);
-	abh_max9295d_deepth_write_block(priv->s_data, wbuf2, sizeof(wbuf2));
-	mdelay(100);
-	abh_max9295d_deepth_read_block(priv->s_data, rbuf, sizeof(rbuf));
+	// abh_max9295d_deepth_write_block(priv->s_data, wbuf1, sizeof(wbuf1));
+	// mdelay(100);
+	// abh_max9295d_deepth_write_block(priv->s_data, wbuf2, sizeof(wbuf2));
+	// mdelay(100);
+	// abh_max9295d_deepth_read_block(priv->s_data, rbuf, sizeof(rbuf));
 
 
 	dev_info(dev,"abh: abh_max9295d_deepth start streaming - exit\n");
@@ -585,6 +586,7 @@ static int abh_max9295d_deepth_probe(struct i2c_client *client, const struct i2c
 		return err;
 	}
 
+	mutex_lock(&serdes_lock__);
 	// DESER_LOCK_LINK(priv->dser_dev);
 	// if ( DESER_CHECK_LINK_STATUS(priv->dser_dev, priv->des_link) ){
 	// 	DESER_UNLOCK_LINK(priv->dser_dev);
@@ -594,6 +596,7 @@ static int abh_max9295d_deepth_probe(struct i2c_client *client, const struct i2c
 
 	err = tegracam_device_register(tc_dev);
 	if (err) {
+		mutex_unlock(&serdes_lock__);
 		// DESER_UNLOCK_LINK(priv->dser_dev);
 		dev_err(dev, "abh: tegra camera driver registration failed\n");
 		return err;
@@ -618,6 +621,7 @@ static int abh_max9295d_deepth_probe(struct i2c_client *client, const struct i2c
 		dev_err(dev, "abh access abh_max9295d_deepth's 9295d failed\n");
 		DESER_RESTORE_LINK(priv->dser_dev);
 		tegracam_device_unregister(tc_dev);
+		mutex_unlock(&serdes_lock__);
 		// DESER_UNLOCK_LINK(priv->dser_dev);
 		return -EINVAL;
 	}
@@ -635,6 +639,7 @@ static int abh_max9295d_deepth_probe(struct i2c_client *client, const struct i2c
 
 	DESER_ENABLE_LINK(priv->dser_dev, priv->des_link);
 	DESER_RESTORE_LINK(priv->dser_dev);
+	mutex_unlock(&serdes_lock__);
 	// DESER_UNLOCK_LINK(priv->dser_dev);
 
 	err = tegracam_v4l2subdev_register(tc_dev, true);
@@ -695,6 +700,7 @@ static void __exit abh_max9295d_deepth_exit(void)
 late_initcall(abh_max9295d_deepth_init);
 module_exit(abh_max9295d_deepth_exit);
 
+MODULE_SOFTDEP("pre: abh_gc2145_max9295d");
 MODULE_DESCRIPTION("GMSL Deserializer driver abh_max9295d_deepth");
 MODULE_AUTHOR("Connor connor.zhou@foxmail.com");
 MODULE_LICENSE("GPL v2");

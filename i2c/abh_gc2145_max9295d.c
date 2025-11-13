@@ -10,6 +10,7 @@
 
 #include <media/tegracam_core.h>
 
+// #define USE_MAX96724_DESER 1
 #define USE_MAX96712_DESER 1
 
 #if defined(USE_MAX96712_DESER)
@@ -583,8 +584,11 @@ static int abh_max9295d_probe(struct i2c_client *client, const struct i2c_device
 		return err;
 	}
 
+	mutex_lock(&serdes_lock__);
+
 	err = tegracam_device_register(tc_dev);
 	if (err) {
+		mutex_unlock(&serdes_lock__);
 		dev_err(dev, "abh: tegra camera driver registration failed\n");
 		return err;
 	}
@@ -594,7 +598,6 @@ static int abh_max9295d_probe(struct i2c_client *client, const struct i2c_device
 	priv->subdev = &tc_dev->s_data->subdev;
 	tegracam_set_privdata(tc_dev, (void *)priv);
 
-	mutex_lock(&serdes_lock__);
 	DESER_MONOPOLIZE_LINK(priv->dser_dev, priv->des_link);
 	iic_write(client,0x40, 0x0000, (MAX9295d_ALTER_ADDR_BASE+priv->des_link)<<1);
 
@@ -632,6 +635,7 @@ static int abh_max9295d_probe(struct i2c_client *client, const struct i2c_device
 		dev_err(dev, "abh: tegra camera subdev registration failed\n");
 		return err;
 	}
+	mutex_unlock(&serdes_lock__);
 
 	iic_write(client, MAX9295d_ALTER_ADDR_BASE+priv->des_link, 0x02d0, 0x00);
 	mdelay(200);
@@ -639,7 +643,6 @@ static int abh_max9295d_probe(struct i2c_client *client, const struct i2c_device
 	mdelay(10);
 	abh_max9295d_write_table(priv, mode_table[ABH_MAX9295D_MODE_1600X1200_CROP_20FPS]);
 	
-	mutex_unlock(&serdes_lock__);
 	dev_info(&client->dev, "abh:Detected abh_max9295d sensor\n");
 	return 0;
 }

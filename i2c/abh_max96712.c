@@ -15,7 +15,7 @@
 #define MAX96712_PIPE_X_SRC_0_MAP_ADDR 0x90D
 
 
-#define MAX96712_PHY_CLK (0x20|24)
+#define MAX96712_PHY_CLK (0x20|25)
 
 struct max96712 {
 	struct i2c_client *i2c_client;
