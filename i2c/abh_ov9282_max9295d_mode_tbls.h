@@ -3,6 +3,8 @@
 
 #include <media/camera_common.h>
 
+//#define ABH_MAX9295D_USE_NARROW_RES
+
 enum {
 	ABH_MAX9295D_MODE_1280X400_CROP_30FPS,
 	ABH_MAX9295D_START_STREAM,
@@ -14,8 +16,14 @@ static const int abh_30fps[] = {
 };
 
 
+#if defined(ABH_MAX9295D_USE_NARROW_RES)
 static const struct camera_common_frmfmt abh_max9295d_frmfmt_deepth[] = {
-	{{1280, 400}, abh_30fps, 1, 0, ABH_MAX9295D_MODE_1280X400_CROP_30FPS},
+    {{1280, 400}, abh_30fps, 1, 0, ABH_MAX9295D_MODE_1280X400_CROP_30FPS},
 };
+#else
+static const struct camera_common_frmfmt abh_max9295d_frmfmt_deepth[] = {
+    {{2560, 800}, abh_30fps, 1, 0,  ABH_MAX9295D_MODE_1280X400_CROP_30FPS},
+};
+#endif
 
 #endif

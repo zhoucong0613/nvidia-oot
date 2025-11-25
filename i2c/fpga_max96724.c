@@ -15,7 +15,7 @@
 #define fpga_max96724_TX45_PIPE_X_DST_CTRL_ADDR 0x92D
 #define fpga_max96724_PIPE_X_SRC_0_MAP_ADDR 0x90D
 
-#define fpga_max96724_PHY_CLK (25)
+#define fpga_max96724_PHY_CLK (12)
 
 #define CHECKNULL(x) if(x==NULL){ \
 		dev_err(NULL, "fpga %s: ##x## NULL ptr\n",__func__); \

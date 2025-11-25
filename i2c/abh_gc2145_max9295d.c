@@ -10,8 +10,8 @@
 
 #include <media/tegracam_core.h>
 
-// #define USE_MAX96724_DESER 1
-#define USE_MAX96712_DESER 1
+#define USE_MAX96724_DESER 1
+//#define USE_MAX96712_DESER 1
 
 #if defined(USE_MAX96712_DESER)
 #include "abh_max96712.h"  // 包含MAX96712的头文件

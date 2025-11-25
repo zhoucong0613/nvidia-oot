@@ -267,8 +267,8 @@ static int fpga_max9295_start_streaming(struct tegracam_device *tc_dev)
 	dev_info(dev,"fpga: fpga_max9295 start streaming - enter\n");
 
 	iic_write(priv->i2c_client, MAX9295_ALTER_ADDR_BASE + priv->des_link, 0x0330, 0x00);	//设置串化器为1x4 模式。
-	//iic_write(priv->i2c_client, MAX9295_ALTER_ADDR_BASE + priv->des_link, 0x0332, 0xee);	//映射
-	//iic_write(priv->i2c_client, MAX9295_ALTER_ADDR_BASE + priv->des_link, 0x0333, 0xe4);
+	iic_write(priv->i2c_client, MAX9295_ALTER_ADDR_BASE + priv->des_link, 0x0332, 0xee);	//映射
+	iic_write(priv->i2c_client, MAX9295_ALTER_ADDR_BASE + priv->des_link, 0x0333, 0xe4);
 	iic_write(priv->i2c_client, MAX9295_ALTER_ADDR_BASE + priv->des_link, 0x0331, 0x33);	//lanes
 	iic_write(priv->i2c_client, MAX9295_ALTER_ADDR_BASE + priv->des_link, 0x0311, 0x40);	//start port b
 	iic_write(priv->i2c_client, MAX9295_ALTER_ADDR_BASE + priv->des_link, 0x0308, 0x64);	//select port b
