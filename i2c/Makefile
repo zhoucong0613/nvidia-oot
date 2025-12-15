@@ -36,3 +36,7 @@ obj-m += abh_gc2145_max9295d.o
 obj-m += abh_ov9282_max9295d.o
 
 obj-m += abh_max96712.o
+
+
+obj-m += isx_max9295.o
+obj-m += isx_max96724.o

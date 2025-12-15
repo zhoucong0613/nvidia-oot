@@ -3,7 +3,7 @@
 
 #include <media/camera_common.h>
 
-//#define ABH_MAX9295D_USE_NARROW_RES
+#define ABH_MAX9295D_USE_NARROW_RES
 
 enum {
 	ABH_MAX9295D_MODE_1280X400_CROP_30FPS,
