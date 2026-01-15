@@ -15,6 +15,7 @@
 #include "x5_max9295_mode_tbls.h"
 
 #define MAX9295_ALTER_ADDR_BASE 0x20
+#define EEPROM_ADDR_BASE 0xA2
 
 struct x5_max9295 {
 	struct i2c_client	*i2c_client;
@@ -542,6 +543,9 @@ static int x5_max9295_probe(struct i2c_client *client, const struct i2c_device_i
 
 	iic_write(client, MAX9295_ALTER_ADDR_BASE+priv->des_link, 0x0044, priv->act_addr<<1); //dst addr
 	iic_write(client, MAX9295_ALTER_ADDR_BASE+priv->des_link, 0x0045, priv->def_addr<<1); //src addr, original sensor addr
+
+	iic_write(client, MAX9295_ALTER_ADDR_BASE+priv->des_link, 0x0042, (0x52+priv->des_link)<<1); //dst addr
+	iic_write(client, MAX9295_ALTER_ADDR_BASE+priv->des_link, 0x0043, 0x50<<1); //src addr, original sensor addr
 
     iic_write(client, MAX9295_ALTER_ADDR_BASE+priv->des_link,0x007b, 0x30+priv->des_link);
     iic_write(client, MAX9295_ALTER_ADDR_BASE+priv->des_link,0x0083, 0x30+priv->des_link);
